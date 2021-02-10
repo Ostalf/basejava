@@ -5,23 +5,18 @@ import com.sun.org.apache.bcel.internal.generic.ATHROW;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    int storageSize = size();
+    int storageSize = 0;
 
     void clear() {
-        for (int i = 0; i <storageSize ; i++) {
+        for (int i = 0; i < storageSize; i++) {
             storage[i] = null;
         }
+        storageSize = 0;
     }
 
     void save(Resume r) {
-        for (int i = 0; i < storage.length; ) {
-            if (storage[i] == null) {
-                storage[i] = r;
-                break;
-            } else {
-                i++;
-            }
-        }
+        storage[storageSize] = r;
+        storageSize++;
     }
 
     Resume get(String uuid) {
@@ -36,41 +31,24 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                storage[i] = null;
-                if (i == 0){
-                    for (int j = i; j < storageSize; j++) {
-                        storage[j] = storage[j+1];
-                    }
-                    break;
-                }
-                for (int j = i; j < storageSize; j++) {
-                    storage[j-1] = storage[j];
-                }
-                break;
+        for (int i = 0; i < storageSize; i++) {
+            if ((storage[i].uuid.equals(uuid)) & (i != storageSize - 1)) {
+                storage[i] = storage[storageSize - 1];
+                storage[storageSize - 1] = null;
+                --storageSize;
             }
         }
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     Resume[] getAll() {
-        Resume[] allResume = new Resume[size()];
+        Resume[] allResume = new Resume[storageSize];
         for (int i = 0; i < storageSize; i++) {
-            allResume[i] =  storage[i];
+            allResume[i] = storage[i];
         }
         return allResume;
     }
 
     int size() {
-        for (int i = 0; i < storage.length; i++ ) {
-            if (storage[i] == null) {
-                storageSize = i;
-                return i;
-            }
-        }
-        return 0;
+        return storageSize;
     }
 }
