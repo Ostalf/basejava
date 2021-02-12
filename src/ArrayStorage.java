@@ -1,5 +1,7 @@
 import com.sun.org.apache.bcel.internal.generic.ATHROW;
 
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
@@ -8,9 +10,7 @@ public class ArrayStorage {
     int storageSize = 0;
 
     void clear() {
-        for (int i = 0; i < storageSize; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage, null);
         storageSize = 0;
     }
 
@@ -41,11 +41,7 @@ public class ArrayStorage {
     }
 
     Resume[] getAll() {
-        Resume[] allResume = new Resume[storageSize];
-        for (int i = 0; i < storageSize; i++) {
-            allResume[i] = storage[i];
-        }
-        return allResume;
+        return Arrays.copyOf(storage,storageSize);
     }
 
     int size() {
