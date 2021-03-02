@@ -1,4 +1,6 @@
-import com.sun.org.apache.bcel.internal.generic.ATHROW;
+package com.urise.webapp.storage;
+
+import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 
@@ -9,19 +11,20 @@ public class ArrayStorage {
     Resume[] storage = new Resume[10000];
     int storageSize = 0;
 
-    void clear() {
+    public void clear() {
         Arrays.fill(storage, null);
         storageSize = 0;
     }
 
-    void save(Resume r) {
+    public void save(Resume r) {
         storage[storageSize] = r;
         storageSize++;
     }
 
-    Resume get(String uuid) {
+
+    public Resume get(String uuid) {
         for (Resume resume : storage) {
-            if (resume.uuid.equals(uuid)) {
+            if (resume.getUuid().equals(uuid)) {
                 return resume;
             } else {
                 return new Resume();
@@ -30,9 +33,9 @@ public class ArrayStorage {
         return new Resume();
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         for (int i = 0; i < storageSize; i++) {
-            if (storage[i].uuid.equals(uuid)) {
+            if (storage[i].getUuid().equals(uuid)) {
                 storage[i] = storage[storageSize - 1];
                 storage[storageSize - 1] = null;
                 --storageSize;
@@ -40,11 +43,11 @@ public class ArrayStorage {
         }
     }
 
-    Resume[] getAll() {
-        return Arrays.copyOf(storage,storageSize);
+    public Resume[] getAll() {
+        return Arrays.copyOf(storage, storageSize);
     }
 
-    int size() {
+    public int size() {
         return storageSize;
     }
 }
