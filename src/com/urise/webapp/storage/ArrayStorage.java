@@ -18,7 +18,7 @@ public class ArrayStorage {
 
     public void save(Resume r) {
         if (storageSize != storage.length) {
-            if (!presence(r.getUuid())) {
+            if (searchIndexByUuid(r.getUuid())==-1) {
                 storage[storageSize] = r;
                 storageSize++;
             }
@@ -28,38 +28,25 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        if (presence(r.getUuid())) {
-            for (int i = 0; i < storageSize; i++) {
-                if (storage[i].getUuid().equals(r.getUuid())) {
-                    storage[i] = r;
-                    break;
-                }
-            }
+        if (searchIndexByUuid(r.getUuid())!=-1) {
+            storage[searchIndexByUuid(r.getUuid())] = r;
         }
     }
 
     public Resume get(String uuid) {
-        if (presence(uuid)) {
-            for (int i = 0; i < storageSize; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    return storage[i];
-                } else {
-                    return new Resume();
-                }
-            }
+        if (searchIndexByUuid(uuid) != -1) {
+            return storage[searchIndexByUuid(uuid)];
+        } else {
+            return new Resume();
         }
-        return new Resume();
     }
 
+
     public void delete(String uuid) {
-        if (presence(uuid)) {
-            for (int i = 0; i < storageSize; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    storage[i] = storage[storageSize - 1];
-                    storage[storageSize - 1] = null;
-                    --storageSize;
-                }
-            }
+        if (searchIndexByUuid(uuid) != -1) {
+            storage[searchIndexByUuid(uuid)] = storage[storageSize - 1];
+            storage[storageSize - 1] = null;
+            --storageSize;
         }
     }
 
@@ -71,15 +58,13 @@ public class ArrayStorage {
         return storageSize;
     }
 
-    private boolean presence(String uuid) {
+    private int searchIndexByUuid(String uuid) {
         for (int i = 0; i < storageSize; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                return true;
-            } else if (storageSize - 1 == i) {
-                System.out.println("Resume " + uuid + " not presents. Try again!");
-                return false;
+                return i;
             }
         }
-        return false;
+        System.out.println("Resume " + uuid + " not presents.");
+        return -1;
     }
 }
