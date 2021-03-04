@@ -12,33 +12,53 @@ public class ArrayStorage {
     int storageSize = 0;
 
     public void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, storageSize, null);
         storageSize = 0;
     }
 
     public void save(Resume r) {
-        storage[storageSize] = r;
-        storageSize++;
+        if (storageSize != storage.length) {
+            if (!presence(r.getUuid())) {
+                storage[storageSize] = r;
+                storageSize++;
+            }
+        } else {
+            System.out.println("Storage is full. Please clear space!");
+        }
     }
 
+    public void update(Resume r) {
+        if (presence(r.getUuid())) {
+            for (int i = 0; i < storageSize; i++) {
+                if (storage[i].getUuid().equals(r.getUuid())) {
+                    storage[i] = r;
+                    break;
+                }
+            }
+        }
+    }
 
     public Resume get(String uuid) {
-        for (Resume resume : storage) {
-            if (resume.getUuid().equals(uuid)) {
-                return resume;
-            } else {
-                return new Resume();
+        if (presence(uuid)) {
+            for (int i = 0; i < storageSize; i++) {
+                if (storage[i].getUuid().equals(uuid)) {
+                    return storage[i];
+                } else {
+                    return new Resume();
+                }
             }
         }
         return new Resume();
     }
 
     public void delete(String uuid) {
-        for (int i = 0; i < storageSize; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                storage[i] = storage[storageSize - 1];
-                storage[storageSize - 1] = null;
-                --storageSize;
+        if (presence(uuid)) {
+            for (int i = 0; i < storageSize; i++) {
+                if (storage[i].getUuid().equals(uuid)) {
+                    storage[i] = storage[storageSize - 1];
+                    storage[storageSize - 1] = null;
+                    --storageSize;
+                }
             }
         }
     }
@@ -49,5 +69,17 @@ public class ArrayStorage {
 
     public int size() {
         return storageSize;
+    }
+
+    private boolean presence(String uuid) {
+        for (int i = 0; i < storageSize; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return true;
+            } else if (storageSize - 1 == i) {
+                System.out.println("Resume " + uuid + " not presents. Try again!");
+                return false;
+            }
+        }
+        return false;
     }
 }
