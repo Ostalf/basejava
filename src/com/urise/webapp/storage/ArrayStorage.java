@@ -18,7 +18,7 @@ public class ArrayStorage {
 
     public void save(Resume r) {
         if (storageSize != storage.length) {
-            if (searchIndexByUuid(r.getUuid())==-1) {
+            if (searchIndexByUuid(r.getUuid()) == -1) {
                 storage[storageSize] = r;
                 storageSize++;
             }
@@ -28,7 +28,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        if (searchIndexByUuid(r.getUuid())!=-1) {
+        if (searchIndexByUuid(r.getUuid()) != -1) {
             storage[searchIndexByUuid(r.getUuid())] = r;
         }
     }
@@ -51,7 +51,7 @@ public class ArrayStorage {
     }
 
     public Resume[] getAll() {
-        return Arrays.copyOf(storage, storageSize);
+        return Arrays.copyOfRange(storage, 0, storageSize);
     }
 
     public int size() {
