@@ -7,7 +7,10 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage extends AbstractArrayStorage {
+public class SortedArrayStorage implements Storage {
+    public static final int STORAGE_LIMIT = 10000;
+    Resume[] storage = new Resume[STORAGE_LIMIT];
+    int storageSize = 0;
 
     public void clear() {
         Arrays.fill(storage, 0, storageSize, null);
@@ -52,6 +55,9 @@ public class ArrayStorage extends AbstractArrayStorage {
         return Arrays.copyOfRange(storage, 0, storageSize);
     }
 
+    public int size() {
+        return storageSize;
+    }
 
     private int searchIndexByUuid(String uuid) {
         for (int i = 0; i < storageSize; i++) {
