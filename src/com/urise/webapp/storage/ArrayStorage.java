@@ -31,15 +31,6 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    public Resume get(String uuid) {
-        if (searchIndexByUuid(uuid) != -1) {
-            return storage[searchIndexByUuid(uuid)];
-        } else {
-            return new Resume();
-        }
-    }
-
-
     public void delete(String uuid) {
         if (searchIndexByUuid(uuid) != -1) {
             storage[searchIndexByUuid(uuid)] = storage[storageSize - 1];
@@ -53,7 +44,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
 
-    private int searchIndexByUuid(String uuid) {
+    protected int searchIndexByUuid(String uuid) {
         for (int i = 0; i < storageSize; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
